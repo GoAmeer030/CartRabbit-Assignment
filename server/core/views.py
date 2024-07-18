@@ -5,9 +5,9 @@ from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .tasks import send_email, create_waitlist
+from .tasks import send_email, create_waitlist, create_referrals, update_waitlist
 from .serializers import UserSerializer, VerificationSerializer
-from .models import Verification
+from .models import Verification, User, Referral
 
 
 class AuthenticationView(APIView):
@@ -18,10 +18,13 @@ class AuthenticationView(APIView):
 
         send_email.delay(subject, message, recipient_list)
 
-    def post(self, request):
+    def post(self, request, code=None):
         user_serializer = UserSerializer(data=request.data)
         if user_serializer.is_valid():
             user_serializer.save()
+
+            if code and User.objects.filter(referral_code=code).exists():
+                create_referrals.delay(code, user_serializer.data["id"])
 
             random_code = get_random_string(length=6)
 
@@ -61,7 +64,12 @@ class VerificationView(APIView):
 
         verification.user.is_verified = True
         verification.user.save()
-        
+
         create_waitlist.delay(verification.user.id)
+
+        referrer_id = (
+            Referral.objects.filter(referee=verification.user).first().referrer.id
+        )
+        update_waitlist.delay(referrer_id)
 
         return Response({"message": "User verified successfully"}, status=200)

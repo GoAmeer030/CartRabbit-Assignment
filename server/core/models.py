@@ -5,7 +5,7 @@ Classes:
     User: Model for storing user details.
     Waitlist: Model for storing user waitlist position.
     Referral: Model for storing user referrals.
-  
+
 Signals:
     create_waitlist: Signal to create a waitlist entry for a new user.
 """
@@ -93,13 +93,11 @@ class Referral(models.Model):
     referrer = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="referrer"
     )
-    referree = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="referred"
-    )
+    referee = models.ForeignKey(User, on_delete=models.CASCADE, related_name="referred")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.referrer.name} - {self.referred.name}"
+        return f"{self.referrer.name} - {self.referee.name}"
 
     class Meta:
         db_table = "referral"

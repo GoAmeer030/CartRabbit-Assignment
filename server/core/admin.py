@@ -8,6 +8,7 @@ class UserAdmin(admin.ModelAdmin):
         "id",
         "name",
         "email",
+        "referral_code",
         "referral_count",
         "is_verified",
         "is_deleted",
@@ -25,8 +26,8 @@ class WaitlistAdmin(admin.ModelAdmin):
 
 @admin.register(Referral)
 class ReferralAdmin(admin.ModelAdmin):
-    list_display = ("referrer", "referree", "created_at")
-    search_fields = ("referrer__name", "referree__name")
+    list_display = ("referrer", "referee", "created_at")
+    search_fields = ("referrer__name", "referee__name")
     list_filter = ("created_at",)
 
 
