@@ -67,9 +67,26 @@ class VerificationView(APIView):
 
         create_waitlist.delay(verification.user.id)
 
-        referrer_id = (
-            Referral.objects.filter(referee=verification.user).first().referrer.id
-        )
-        update_waitlist.delay(referrer_id)
+        referrer = Referral.objects.filter(referee=verification.user).first()
+        if referrer is not None:
+            referrer_id = referrer.referrer.id
+            update_waitlist.delay(referrer_id)
 
         return Response({"message": "User verified successfully"}, status=200)
+
+
+class UserView(APIView):
+    def get(self, request):
+        email = request.query_params.get("email")
+
+        if email is None:
+            return Response({"error": "Email is required"}, status=400)
+
+        user = User.objects.filter(email=email).first()
+        if user is None:
+            return Response({"error": "User not found"}, status=404)
+
+        if user.is_deleted:
+            return Response({"error": "User not found"}, status=404)
+
+        return Response(UserSerializer(user).data, status=200)

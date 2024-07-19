@@ -1,9 +1,10 @@
 from django.urls import path
 
-from .views import AuthenticationView, VerificationView
+from .views import AuthenticationView, VerificationView, UserView
 
 urlpatterns = [
     path("auth/", AuthenticationView.as_view(), name="auth"),
     path("auth/<str:code>/", AuthenticationView.as_view(), name="auth_with_referal"),
     path("auth/verify/<str:code>/", VerificationView.as_view(), name="verify"),
+    path("user/", UserView.as_view(), name="user"),
 ]

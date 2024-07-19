@@ -5,7 +5,14 @@ from .models import User, Waitlist, Verification, Referral
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = "__all__"
+        fields = (
+            "id",
+            "name",
+            "email",
+            "is_verified",
+            "referral_code",
+            "referral_count",
+        )
 
 
 class WaitlistSerializer(serializers.ModelSerializer):
