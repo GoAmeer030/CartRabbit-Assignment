@@ -6,8 +6,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from .tasks import send_email, create_waitlist, create_referrals, update_waitlist
-from .serializers import UserSerializer, VerificationSerializer
-from .models import Verification, User, Referral
+from .serializers import UserSerializer, VerificationSerializer, WaitlistSerializer
+from .models import Verification, User, Referral, Waitlist
 
 
 class AuthenticationView(APIView):
@@ -78,7 +78,10 @@ class VerificationView(APIView):
 class UserView(APIView):
     def get(self, request):
         email = request.query_params.get("email")
+        if email:
+            return self.get_user_by_mail(request, email)
 
+    def get_user_by_mail(self, request, email):
         if email is None:
             return Response({"error": "Email is required"}, status=400)
 
@@ -90,3 +93,20 @@ class UserView(APIView):
             return Response({"error": "User not found"}, status=404)
 
         return Response(UserSerializer(user).data, status=200)
+
+
+class WaitlistView(APIView):
+    def get(self, request):
+        id = request.query_params.get("id")
+        if id:
+            return self.get_waitlist_by_id(request, id)
+
+    def get_waitlist_by_id(self, request, id):
+        if id is None:
+            return Response({"error": "Id is required"}, status=400)
+
+        waitlist = Waitlist.objects.filter(id=id).first()
+        if waitlist is None:
+            return Response({"error": "Waitlist not found"}, status=404)
+
+        return Response(WaitlistSerializer(waitlist).data, status=200)

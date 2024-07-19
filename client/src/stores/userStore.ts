@@ -10,12 +10,22 @@ export interface User {
     referralCount: number;
 }
 
-interface UserStore {
+export interface WaitlistPosition {
+    position: number;
+}
+
+interface UserState {
     user: User;
     setUser: (user: User) => void;
     fetchUser: (email: string) => void;
     registerUser: (name: string, email: string) => void;
     resetUser: () => void;
+}
+
+interface WaitlistPositionState {
+    waitlistPosition: WaitlistPosition;
+    setWaitlistPosition: (waitlistPosition: WaitlistPosition) => void;
+    fetchWaitlistPosition: (id: number) => void;
 }
 
 const createUserFromData = (data: any): User => ({
@@ -27,7 +37,16 @@ const createUserFromData = (data: any): User => ({
     referralCount: data.referral_count,
 });
 
-const userInitialState: User = {
+const saveUserToSessionStorage = (user: User) => {
+    sessionStorage.setItem('user', JSON.stringify(user));
+};
+
+const loadUserFromSessionStorage = (): User | null => {
+    const userData = sessionStorage.getItem('user');
+    return userData ? JSON.parse(userData) : null;
+};
+
+const userInitialState: User = loadUserFromSessionStorage() || {
     id: 0,
     name: "",
     email: "",
@@ -36,16 +55,36 @@ const userInitialState: User = {
     referralCount: 0,
 };
 
-export const useUserStore = create<UserStore>((set) => ({
+export const useUserStore = create<UserState>((set) => ({
     user: userInitialState,
-    setUser: (user) => set({ user }),
+    setUser: (user) => {
+        saveUserToSessionStorage(user);
+        set({ user });
+    },
     fetchUser: async (email) => {
         const { data } = await axios.get(`${import.meta.env.VITE_SERVER_URL}/user/?email=${email}`);
-        set({ user: createUserFromData(data) });
+        const user = createUserFromData(data);
+        saveUserToSessionStorage(user);
+        set({ user });
     },
     registerUser: async (name, email) => {
         const { data } = await axios.post(`${import.meta.env.VITE_SERVER_URL}/auth/`, { name, email });
-        set({ user: createUserFromData(data) });
+        const user = createUserFromData(data);
+        saveUserToSessionStorage(user);
+        set({ user });
     },
-    resetUser: () => set({ user: userInitialState }),
+    resetUser: () => {
+        sessionStorage.removeItem('user');
+        set({ user: userInitialState });
+    },
+}));
+
+export const useWaitlistPositionStore = create<WaitlistPositionState>((set) => ({
+    waitlistPosition: { position: 0 },
+    setWaitlistPosition: (waitlistPosition) => set({ waitlistPosition }),
+    fetchWaitlistPosition: async (id) => {
+        const { data } = await axios.get(`${import.meta.env.VITE_SERVER_URL}/waitlist/?id=${id}`);
+        console.log(data);
+        set({ waitlistPosition: data });
+    },
 }));

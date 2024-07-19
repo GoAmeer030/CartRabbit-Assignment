@@ -4,6 +4,8 @@ import { z } from 'zod';
 import { useState } from "react";
 import { AxiosError } from 'axios';
 
+import { ArrowRight } from 'lucide-react';
+
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,15 +25,19 @@ export default function EmailForm() {
         email: z.string().email(),
     });
 
+    const { user, fetchUser } = useUserStore();
+    const [email, setEmail] = useState<string>(user.email);
+
     const form = useForm<z.infer<typeof emailSchema>>({
         resolver: zodResolver(emailSchema),
+        defaultValues: {
+            email: user.email,
+        }
     });
 
     const { toast } = useToast();
 
     const { setRegisterDialogTrigger } = useParamStore();
-    const { user, fetchUser } = useUserStore();
-    const [email, setEmail] = useState<string>("");
 
     const handleGet = async () => {
         try {
@@ -80,6 +86,7 @@ export default function EmailForm() {
                 />
                 <Button type="submit" className="w-2/6">
                     Continue
+                    <ArrowRight className="lg:h-5 lg:w-5 md:h-5 md:w-5 h-8 w-8 lg:ml-2 ml-1" />
                 </Button>
             </form>
         </Form>

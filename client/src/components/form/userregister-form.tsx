@@ -9,11 +9,13 @@ import {
     Form,
     FormControl,
     FormField,
+    FormLabel,
     FormItem,
     FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
+import { useParamStore } from '@/stores/paramStore';
 import { useUserStore } from '@/stores/userStore';
 
 export default function UserRegisterForm() {
@@ -24,6 +26,7 @@ export default function UserRegisterForm() {
 
     const { toast } = useToast();
 
+    const { setRegisterDialogTrigger } = useParamStore();
     const { user, registerUser } = useUserStore();
     const [name, setName] = useState<string>("");
     const [email, setEmail] = useState<string>(user.email);
@@ -36,9 +39,15 @@ export default function UserRegisterForm() {
         }
     });
 
-    const handleSave = async () => {
+    const handleSave = () => {
         try {
             registerUser(name, email);
+            setRegisterDialogTrigger(false);
+
+            toast({
+                title: "Registration Successful",
+                description: "Account has created successfully. Verification email has been sent to your email.",
+            });
         } catch (error) {
             toast({
                 title: "Registration Failed",
@@ -56,6 +65,7 @@ export default function UserRegisterForm() {
                     name="name"
                     render={({ field }) => (
                         <FormItem>
+                            <FormLabel className="text-right">Name</FormLabel>
                             <FormControl>
                                 <Input
                                     type="text"
@@ -76,6 +86,7 @@ export default function UserRegisterForm() {
                     name="email"
                     render={({ field }) => (
                         <FormItem>
+                            <FormLabel className="text-right">Email</FormLabel>
                             <FormControl>
                                 <Input
                                     type="text"
