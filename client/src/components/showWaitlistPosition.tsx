@@ -12,7 +12,7 @@ export default function ShowWaitlistPosition() {
     const { user } = useUserStore();
     const { waitlistPosition, fetchWaitlistPosition } = useWaitlistPositionStore();
 
-    if (user.email === "") {
+    if (user.email === "" || user.id === 0 || user.isVerified === false) {
         return;
     }
 

@@ -21,10 +21,13 @@ class AuthenticationView(APIView):
     def post(self, request, code=None):
         user_serializer = UserSerializer(data=request.data)
         if user_serializer.is_valid():
-            user_serializer.save()
+            user_instance = user_serializer.save()
 
             if code and User.objects.filter(referral_code=code).exists():
                 create_referrals.delay(code, user_serializer.data["id"])
+            elif code:
+                user_instance.delete()
+                return Response({"error": "Invalid referral code"}, status=400)
 
             random_code = get_random_string(length=6)
 

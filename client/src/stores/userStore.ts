@@ -18,7 +18,7 @@ interface UserState {
     user: User;
     setUser: (user: User) => void;
     fetchUser: (email: string) => void;
-    registerUser: (name: string, email: string) => void;
+    registerUser: (name: string, email: string, refCd: string) => void;
     resetUser: () => void;
 }
 
@@ -28,6 +28,7 @@ interface WaitlistPositionState {
     fetchWaitlistPosition: (id: number) => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const createUserFromData = (data: any): User => ({
     id: data.id,
     name: data.name,
@@ -67,11 +68,18 @@ export const useUserStore = create<UserState>((set) => ({
         saveUserToSessionStorage(user);
         set({ user });
     },
-    registerUser: async (name, email) => {
-        const { data } = await axios.post(`${import.meta.env.VITE_SERVER_URL}/auth/`, { name, email });
-        const user = createUserFromData(data);
-        saveUserToSessionStorage(user);
-        set({ user });
+    registerUser: async (name, email, refCd) => {
+        const url = `${import.meta.env.VITE_SERVER_URL}/auth/${refCd ? `${refCd}/` : ''}`;
+        const { data, status } = await axios.post(url, { name, email });
+        if (status === 201) {
+            const user = createUserFromData(data);
+            saveUserToSessionStorage(user);
+            set({ user });
+        } else if (status === 400) {
+            throw new Error('Bad request');
+        } else {
+            throw new Error('Internal server error');
+        }
     },
     resetUser: () => {
         sessionStorage.removeItem('user');
