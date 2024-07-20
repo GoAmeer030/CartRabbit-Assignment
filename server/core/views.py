@@ -1,19 +1,29 @@
 from datetime import timedelta
+import os
+from math import ceil
 
 from django.utils.crypto import get_random_string
 from django.utils import timezone
+from rest_framework import generics
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from .tasks import send_email, create_waitlist, create_referrals, update_waitlist
-from .serializers import UserSerializer, VerificationSerializer, WaitlistSerializer
+from .serializers import (
+    UserSerializer,
+    VerificationSerializer,
+    WaitlistSerializer,
+    WaitlistWithNamesSerializer,
+)
 from .models import Verification, User, Referral, Waitlist
 
 
 class AuthenticationView(APIView):
     def send_verification_mail(self, code, mail):
         subject = "Verification Code"
-        message = f"Click this link to be verified http://localhost:8000/api/auth/verify/{code}/"
+        client_url = os.getenv("CLIENT_URL")
+        message = f"Click this link to be verified {client_url}/verify/?code={code}"
         recipient_list = [mail]
 
         send_email.delay(subject, message, recipient_list)
@@ -27,7 +37,7 @@ class AuthenticationView(APIView):
                 create_referrals.delay(code, user_serializer.data["id"])
             elif code:
                 user_instance.delete()
-                return Response({"error": "Invalid referral code"}, status=400)
+                return Response({"message": "Invalid referral code"}, status=400)
 
             random_code = get_random_string(length=6)
 
@@ -57,13 +67,13 @@ class VerificationView(APIView):
         verification = Verification.objects.filter(unique_code=code).first()
 
         if verification is None:
-            return Response({"error": "Invalid verification code"}, status=400)
+            return Response({"message": "Invalid verification code"}, status=400)
 
         if verification.user.is_verified:
-            return Response({"error": "User already verified"}, status=400)
+            return Response({"message": "User already verified"}, status=400)
 
         if verification.created_at < timezone.now() - timedelta(minutes=10):
-            return Response({"error": "Verification code expired"}, status=400)
+            return Response({"message": "Verification code expired"}, status=400)
 
         verification.user.is_verified = True
         verification.user.save()
@@ -86,14 +96,14 @@ class UserView(APIView):
 
     def get_user_by_mail(self, request, email):
         if email is None:
-            return Response({"error": "Email is required"}, status=400)
+            return Response({"message": "Email is required"}, status=400)
 
         user = User.objects.filter(email=email).first()
         if user is None:
-            return Response({"error": "User not found"}, status=404)
+            return Response({"message": "User not found"}, status=404)
 
         if user.is_deleted:
-            return Response({"error": "User not found"}, status=404)
+            return Response({"message": "User not found"}, status=404)
 
         return Response(UserSerializer(user).data, status=200)
 
@@ -106,10 +116,37 @@ class WaitlistView(APIView):
 
     def get_waitlist_by_id(self, request, id):
         if id is None:
-            return Response({"error": "Id is required"}, status=400)
+            return Response({"message": "Id is required"}, status=400)
 
-        waitlist = Waitlist.objects.filter(id=id).first()
+        waitlist = Waitlist.objects.filter(user=id).first()
         if waitlist is None:
-            return Response({"error": "Waitlist not found"}, status=404)
+            return Response({"message": "Waitlist not found"}, status=404)
 
         return Response(WaitlistSerializer(waitlist).data, status=200)
+
+
+class WaitlistWithNamesPagination(PageNumberPagination):
+    page_size = 2
+
+    def paginate_queryset(self, queryset, request, view=None):
+        return super(WaitlistWithNamesPagination, self).paginate_queryset(
+            queryset, request, view
+        )
+
+    def get_paginated_response(self, data):
+        return Response(
+            {
+                "links": {
+                    "next": self.get_next_link(),
+                    "previous": self.get_previous_link(),
+                },
+                "total_pages": ceil(self.page.paginator.count / self.page_size),
+                "results": data,
+            }
+        )
+
+
+class WaitlistWithNamesView(generics.ListAPIView):
+    queryset = Waitlist.objects.all()
+    serializer_class = WaitlistWithNamesSerializer
+    pagination_class = WaitlistWithNamesPagination

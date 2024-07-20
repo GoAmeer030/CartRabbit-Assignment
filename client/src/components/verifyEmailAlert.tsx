@@ -32,7 +32,7 @@ export function VerifyEmailAlert() {
 
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [user.email]);
 
     if (user.isVerified || user.id === 0) {
         return null;

@@ -31,14 +31,14 @@ export default function ShowWaitlistPosition() {
 
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [user.email]);
 
     return (
         <div className="flex flex-col justify-center items-center">
             <h1 className="text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1]">🎉🎉 Hurray 🎉🎉<br />You are at position <span className="text-primary inline">{waitlistPosition.position}</span></h1>
             <div className="flex flex-col justify-center items-center">
-                <p className="mt-2 text-slate-600">scroll down for more</p>
-                <CircleArrowDown className="h-8 w-8 animate-bounce mt-4" color="#475569" />
+                <p className="mt-2 text-muted-foreground">scroll down for more</p>
+                <CircleArrowDown className="h-8 w-8 animate-bounce mt-4" color="#a8a29f" />
             </div>
         </div>
     );

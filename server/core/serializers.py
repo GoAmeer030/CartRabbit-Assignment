@@ -21,6 +21,14 @@ class WaitlistSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class WaitlistWithNamesSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(slug_field="name", read_only=True)
+
+    class Meta:
+        model = Waitlist
+        fields = ("user", "position")
+
+
 class VerificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Verification

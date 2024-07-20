@@ -22,6 +22,7 @@ class WaitlistAdmin(admin.ModelAdmin):
     list_display = ("user", "position")
     search_fields = ("user__name",)
     list_filter = ("position",)
+    order_by = ("position",)
 
 
 @admin.register(Referral)

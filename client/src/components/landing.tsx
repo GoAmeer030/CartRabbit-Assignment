@@ -1,14 +1,15 @@
-import EmailForm from "@/components/form/email-form";
-import ShowWaitlistPosition from "@/components/showWaitlistPosition";
+import Entry from "@/components/entry"
+import Secondary from "@/components/secondary"
 
 export default function Landing() {
 	return (
-		<div className="flex justify-center items-center h-screen">
-			<div className="flex flex-col gap-3 w-screen justify-center items-center">
-				<h1 className="text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1]">Join the waitlist!</h1>
-				<EmailForm />
-				<div className="mt-20">
-					<ShowWaitlistPosition />
+		<div className="snap-y snap-mandatory overflow-y-scroll h-screen flex-grow z-0">
+			<div className="snap-always snap-center" id="entry">
+				<Entry />
+			</div>
+			<div className="snap-always snap-center flex justify-center pt-32" id="page-2">
+				<div className="h-[80vh]">
+					<Secondary />
 				</div>
 			</div>
 		</div>

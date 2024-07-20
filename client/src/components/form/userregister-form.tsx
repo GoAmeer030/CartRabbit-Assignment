@@ -125,7 +125,7 @@ export default function UserRegisterForm() {
                             <FormControl>
                                 <Input
                                     type="text"
-                                    placeholder="youremail@domain.com"
+                                    placeholder="Leave empty if you don't have one!"
                                     {...field}
                                     onChange={(e) => {
                                         setReferralCode(e.target.value);
