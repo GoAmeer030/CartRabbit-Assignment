@@ -1,3 +1,9 @@
+/**
+ * Referals Table
+ * 
+ * This component is responsible for displaying the referals table.
+ */
+
 import {
     Table,
     TableBody,

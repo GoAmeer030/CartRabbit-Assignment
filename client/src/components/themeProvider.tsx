@@ -1,3 +1,10 @@
+/**
+ * ThemeProvider component
+ * 
+ * This component provides a context for managing the theme of the application.
+ * Taken from Shadcn UI.
+ */
+
 import { createContext, useContext, useEffect, useState } from "react"
 
 type Theme = "dark" | "light" | "system"

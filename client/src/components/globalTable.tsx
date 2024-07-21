@@ -1,3 +1,11 @@
+/**
+ * Global Table component
+ * 
+ * This component is responsible for displaying the global waitlist table.
+ * Automated pagination is implemented to display the waitlist in pages.
+ * The table size in a single page is depend on the server response.
+ */
+
 import axios from "axios"
 import { useEffect, useState } from "react"
 
@@ -35,6 +43,7 @@ export default function GlobalTable() {
       }
     }
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.email, currentPage]);
 
   return (

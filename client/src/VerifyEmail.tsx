@@ -1,3 +1,12 @@
+/**
+ * VerifyEmail Component
+ * 
+ * This component is responsible for handling the email verification process.
+ * It extracts the verification code from the URL query parameters and sends it to the server
+ * to verify the user's email. Depending on the server's response, it displays a message to the user.
+ * The component also includes a button to return to the home page after the verification process.
+ */
+
 import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios, { AxiosError } from "axios";

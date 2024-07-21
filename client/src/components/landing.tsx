@@ -1,3 +1,11 @@
+/**
+ * The Landing Component
+ * 
+ * This component is responsible for rendering the landing page of the application.
+ * It includes the Entry and Secondary components.
+ * Implements snap scrolling for the components.
+ */
+
 import Entry from "@/components/entry"
 import Secondary from "@/components/secondary"
 

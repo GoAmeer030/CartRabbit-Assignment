@@ -1,3 +1,10 @@
+/**
+ * ReferalsPage component
+ * 
+ * This component is responsible for rendering the referals page of the application.
+ * It includes the ReferComponent and ReferalsTable components.
+ */
+
 import axios from "axios"
 import { useEffect, useState } from "react"
 
@@ -37,6 +44,7 @@ export default function ReferalsPage() {
             }
         }
         fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user.id, currentPage]);
 
     return (

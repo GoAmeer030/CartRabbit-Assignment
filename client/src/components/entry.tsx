@@ -1,3 +1,9 @@
+/**
+ * Entry component
+ * 
+ * This component is the entry point for the application. It displays a form for users to enter their email
+ */
+
 import EmailForm from "@/components/form/email-form";
 import ShowWaitlistPosition from "@/components/showWaitlistPosition";
 import VerifyEmailAlert from "@/components/verifyEmailAlert";

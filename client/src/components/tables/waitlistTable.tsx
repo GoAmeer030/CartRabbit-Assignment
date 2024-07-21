@@ -1,3 +1,9 @@
+/**
+ * Waitlist Table
+ * 
+ * This component is responsible for displaying the waitlist table.
+ */
+
 import {
     Table,
     TableBody,

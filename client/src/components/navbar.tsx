@@ -1,3 +1,9 @@
+/**
+ * Navbar component
+ * 
+ * This component is responsible for rendering the navigation bar at the top of the page.
+ */
+
 import { Flame } from 'lucide-react';
 
 import { ModeToggle } from "@/components/modeToggle";

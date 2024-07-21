@@ -1,3 +1,10 @@
+/**
+ * Secondary component
+ * 
+ * This component is responsible for rendering the secondary page of the application.
+ * It includes the GlobalTable and ReferalsPage components.
+ */
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import GlobalTable from "@/components/globalTable"

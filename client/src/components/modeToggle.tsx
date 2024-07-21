@@ -1,3 +1,9 @@
+/**
+ * Theme toggle component
+ * 
+ * This component is responsible for rendering the theme toggle button.
+ */
+
 import { Moon, Sun } from "lucide-react"
 
 import { Button } from "@/components/ui/button"

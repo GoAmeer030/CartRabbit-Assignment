@@ -1,3 +1,9 @@
+/**
+ * Waitlist Position Component
+ * 
+ * This component is responsible for displaying the user's position in the waitlist.
+ */
+
 import { useEffect } from "react";
 
 import { CircleArrowDown } from 'lucide-react';

@@ -1,3 +1,9 @@
+/**
+ * User Register Form
+ * 
+ * This component is responsible for displaying the user registration form.
+ */
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';

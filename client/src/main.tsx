@@ -1,3 +1,9 @@
+/**
+ * main.tsx
+ * Entry point for the React application, setting up routing and theme context.
+ * Utilizes React Router for navigation and ThemeProvider for theme management.
+ */
+
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'

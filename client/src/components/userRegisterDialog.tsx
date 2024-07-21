@@ -1,3 +1,9 @@
+/**
+ * User Register Dialog
+ * 
+ * This component displays a dialog for user registration.
+ */
+
 import UserRegisterForm from "@/components/form/userregister-form";
 
 import {

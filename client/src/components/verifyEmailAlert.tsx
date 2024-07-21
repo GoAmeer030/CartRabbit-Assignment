@@ -1,3 +1,9 @@
+/**
+ * Verify Email Alert Component
+ * 
+ * This component is responsible for displaying an alert to the user to verify their email.
+ */
+
 import { MailWarning } from 'lucide-react'
 
 import {

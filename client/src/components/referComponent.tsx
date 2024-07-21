@@ -1,3 +1,10 @@
+/**
+ * Referrer Component
+ * 
+ * This component is responsible for rendering the referral section.
+ * It includes the referral link and a button to copy the link along with the number of referrals.
+ */
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
