@@ -1,6 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import GlobalTable from "@/components/globalTable"
+import ReferalsPage from "@/components/referalsPage"
 
 import { useUserStore } from "@/stores/userStore"
 
@@ -20,7 +21,11 @@ export default function Secondary() {
                     <GlobalTable />
                 </div>
             </TabsContent>
-            {user.id !== 0 && <TabsContent value="my-referrals"></TabsContent>}
+            {user.id !== 0 && <TabsContent value="my-referrals">
+                <div>
+                    <ReferalsPage />
+                </div>
+            </TabsContent>}
         </Tabs>
     )
 }

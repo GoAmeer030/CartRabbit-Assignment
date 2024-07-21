@@ -35,6 +35,20 @@ class VerificationSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class UserWithVerificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("name", "is_verified")
+
+
+class ReferralsWithDetailsSerializer(serializers.ModelSerializer):
+    referee = UserWithVerificationSerializer(read_only=True)
+
+    class Meta:
+        model = Referral
+        fields = ("referee",)
+
+
 class ReferralSerializer(serializers.ModelSerializer):
     class Meta:
         model = Referral

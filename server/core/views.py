@@ -15,6 +15,7 @@ from .serializers import (
     VerificationSerializer,
     WaitlistSerializer,
     WaitlistWithNamesSerializer,
+    ReferralsWithDetailsSerializer,
 )
 from .models import Verification, User, Referral, Waitlist
 
@@ -126,7 +127,7 @@ class WaitlistView(APIView):
 
 
 class WaitlistWithNamesPagination(PageNumberPagination):
-    page_size = 2
+    page_size = 10
 
     def paginate_queryset(self, queryset, request, view=None):
         return super(WaitlistWithNamesPagination, self).paginate_queryset(
@@ -150,3 +151,34 @@ class WaitlistWithNamesView(generics.ListAPIView):
     queryset = Waitlist.objects.all().order_by("position")
     serializer_class = WaitlistWithNamesSerializer
     pagination_class = WaitlistWithNamesPagination
+
+
+class ReferralsWithDetailsPagination(PageNumberPagination):
+    page_size = 5
+
+    def paginate_queryset(self, queryset, request, view=None):
+        return super(ReferralsWithDetailsPagination, self).paginate_queryset(
+            queryset, request, view
+        )
+
+    def get_paginated_response(self, data):
+        return Response(
+            {
+                "links": {
+                    "next": self.get_next_link(),
+                    "previous": self.get_previous_link(),
+                },
+                "total_pages": ceil(self.page.paginator.count / self.page_size),
+                "results": data,
+            }
+        )
+
+
+class ReferralsWithDetailsView(generics.ListAPIView):
+    serializer_class = ReferralsWithDetailsSerializer
+    pagination_class = ReferralsWithDetailsPagination
+
+    def get_queryset(self):
+        id = self.kwargs.get("id")
+        queryset = Referral.objects.filter(referrer=id)
+        return queryset

@@ -4,14 +4,13 @@ import { useEffect, useState } from "react"
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
 
-import WaitlistTable from "@/components/waitlistTable";
+import WaitlistTable from "@/components/tables/waitlistTable";
 import { useUserStore } from "@/stores/userStore";
 
 export default function GlobalTable() {
@@ -47,7 +46,18 @@ export default function GlobalTable() {
             />
           </PaginationItem>
           {totalPage > 0 && Array.from({ length: Math.min(3, totalPage) }, (_, i) => {
-            const startPage = Math.max(1, currentPage - 2);
+            let startPage;
+            if (totalPage <= 3) {
+              startPage = 1;
+            } else if (currentPage === 3) {
+              startPage = 2;
+            } else if (currentPage > 3 && currentPage < totalPage) {
+              startPage = currentPage - 1;
+            } else if (currentPage === totalPage) {
+              startPage = totalPage - 2;
+            } else {
+              startPage = 1;
+            }
             const pageNumber = startPage + i;
             if (pageNumber > totalPage) return null;
             return (

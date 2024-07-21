@@ -6,6 +6,7 @@ from .views import (
     UserView,
     WaitlistView,
     WaitlistWithNamesView,
+    ReferralsWithDetailsView,
 )
 
 urlpatterns = [
@@ -15,4 +16,5 @@ urlpatterns = [
     path("user/", UserView.as_view(), name="user"),
     path("waitlist/", WaitlistView.as_view(), name="waitlist"),
     path("global-waitlist/", WaitlistWithNamesView.as_view(), name="global_waitlist"),
+    path("referrals/<int:id>/", ReferralsWithDetailsView.as_view(), name="referrals"),
 ]
