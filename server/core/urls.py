@@ -1,3 +1,18 @@
+"""
+This module defines URL patterns for the application.
+
+It includes routes for authentication, verification, user management, waitlist management, and referral details.
+
+Routes:
+- auth/: Handles authentication requests.
+- auth/<str:code>/: Handles authentication with a referral code.
+- auth/verify/<str:code>/: Handles verification of authentication codes.
+- user/: Manages user information.
+- waitlist/: Manages the waitlist for users without specifying names.
+- global-waitlist/: Manages a global waitlist including names.
+- referrals/<int:id>/: Provides details on referrals based on their ID.
+"""
+
 from django.urls import path
 
 from .views import (

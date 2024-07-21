@@ -1,3 +1,8 @@
+"""
+Celery configuration file
+
+This file contains the Celery configuration for the Django project.
+"""
 from __future__ import absolute_import, unicode_literals
 import os
 from celery import Celery

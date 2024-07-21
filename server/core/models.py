@@ -5,6 +5,7 @@ Classes:
     User: Model for storing user details.
     Waitlist: Model for storing user waitlist position.
     Referral: Model for storing user referrals.
+    Verification: Model for storing user verification details.
 
 Signals:
     create_waitlist: Signal to create a waitlist entry for a new user.
@@ -15,7 +16,8 @@ from django.utils.crypto import get_random_string
 
 
 class User(models.Model):
-    """Model for storing user details.
+    """
+    Model for storing user details.
 
     Args:
         models (django.db.models): Django model class.
@@ -58,36 +60,38 @@ class User(models.Model):
 
 
 class Waitlist(models.Model):
-    """Model for storing user waitlist position.
+    """
+    Model for storing user waitlist position.
 
     Args:
         models (django.db.models): Django model class.
 
     Attributes:
         user (ForeignKey): User foreign key.
-        position (int): Position of the user in the waitlist
+        position (int): Position of the user in the waitlist.
     """
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     position = models.IntegerField(default=99, unique=True, null=False, blank=False)
 
     def __str__(self):
-        return f"{User.name} - {self.position}"
+        return f"{self.user.name} - {self.position}"
 
     class Meta:
         db_table = "waitlist"
 
 
 class Referral(models.Model):
-    """Model for storing user referrals.
+    """
+    Model for storing user referrals.
 
     Args:
         models (django.db.models): Django model class.
 
     Attributes:
         referrer (ForeignKey): User who referred.
-        referree (ForeignKey): User who was referred.
-        created_at (datetime): Date and time of referral creation
+        referee (ForeignKey): User who was referred.
+        created_at (datetime): Date and time of referral creation.
     """
 
     referrer = models.ForeignKey(
@@ -104,6 +108,18 @@ class Referral(models.Model):
 
 
 class Verification(models.Model):
+    """
+    Model for storing user verification details.
+
+    Args:
+        models (django.db.models): Django model class.
+
+    Attributes:
+        unique_code (str): Unique verification code.
+        user (ForeignKey): User foreign key.
+        created_at (datetime): Date and time of verification creation.
+    """
+
     unique_code = models.CharField(max_length=6, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
