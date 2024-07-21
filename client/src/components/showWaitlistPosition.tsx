@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
 import { CircleArrowDown } from 'lucide-react';
+import { Card } from "@/components/ui/card"
 
 import { useToast } from "@/components/ui/use-toast";
 
@@ -37,12 +38,12 @@ export default function ShowWaitlistPosition() {
     }
 
     return (
-        <div className="flex flex-col justify-center items-center">
-            <h1 className="text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1]">🎉🎉 Hurray 🎉🎉<br />You are at position <span className="text-primary inline">{waitlistPosition.position}</span></h1>
-            <div className="flex flex-col justify-center items-center">
+        <Card className="flex flex-col justify-center items-center lg:w-[70%] md:w-[70%] w-[90%] popup-from-bottom-animation">
+            <h1 className="text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1] mt-5">🎉🎉 Hurray 🎉🎉<br />You are at position <span className="text-primary inline">{waitlistPosition.position}</span></h1>
+            <div className="flex flex-col justify-center items-center mb-5">
                 <p className="mt-2 text-muted-foreground">scroll down for more</p>
                 <CircleArrowDown className="h-8 w-8 animate-bounce mt-4" color="#a8a29f" />
             </div>
-        </div>
+        </Card>
     );
 }

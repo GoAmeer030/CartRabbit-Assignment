@@ -9,6 +9,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
+import { useToast } from "@/components/ui/use-toast";
 
 import WaitlistTable from "@/components/tables/waitlistTable";
 import { useUserStore } from "@/stores/userStore";
@@ -18,6 +19,7 @@ export default function GlobalTable() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(0);
   const [data, setData] = useState<any>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,16 +27,18 @@ export default function GlobalTable() {
         const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/global-waitlist/?page=${currentPage}`);
         setTotalPage(response.data.total_pages);
         setData(response.data.results);
-        console.log(response.data);
       } catch (error) {
-        console.error(error);
+        toast({
+          description: "An error occurred while getting global list! Please try again!",
+          variant: "destructive"
+        });
       }
     }
     fetchData();
   }, [user.email, currentPage]);
 
   return (
-    <div className="flex flex-col h-[70vh]">
+    <div className="flex flex-col h-[70vh] items-center">
       <div className="mb-auto">
         {data && <WaitlistTable data={data} currentPage={currentPage} />}
       </div>

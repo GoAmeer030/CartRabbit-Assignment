@@ -22,7 +22,7 @@ import { AxiosError } from 'axios';
 
 export default function UserRegisterForm() {
     const userRegisterSchema = z.object({
-        name: z.string().min(3).max(50),
+        name: z.string().min(3).max(20),
         email: z.string().email(),
         referralCode: z.string().optional(),
     });

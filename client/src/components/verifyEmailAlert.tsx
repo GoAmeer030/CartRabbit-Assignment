@@ -20,7 +20,6 @@ export default function VerifyEmailAlert() {
                 try {
                     await fetchUser(user.email);
                 } catch (error) {
-                    console.log(error);
                     toast({
                         description: "An error occurred! When fetching user data! Please try again!",
                         variant: "destructive"
@@ -39,18 +38,20 @@ export default function VerifyEmailAlert() {
     }
 
     return (
-        <div className="absolute top-36 left-1/2 -translate-x-1/2 lg:w-[40%] md:w-[60%] w-[90%]">
-            <Alert className="flex flex-row justify-center">
-                <div>
-                    <MailWarning className="h-6 w-6 mt-1" />
-                </div>
-                <div className="ml-3">
-                    <AlertTitle>Verify Email!</AlertTitle>
-                    <AlertDescription>
-                        Please verify your email to continue.
-                    </AlertDescription>
-                </div>
-            </Alert>
+        <div className="text-center">
+            <div className="inline-block w-[90%] md:w-[60%] lg:w-[40%]">
+                <Alert className="flex flex-row justify-center top-32 popup-from-top-animation">
+                    <div>
+                        <MailWarning className="h-6 w-6 mt-1" />
+                    </div>
+                    <div className="ml-3">
+                        <AlertTitle>Verify Email!</AlertTitle>
+                        <AlertDescription>
+                            Please verify your email to continue.
+                        </AlertDescription>
+                    </div>
+                </Alert>
+            </div>
         </div>
     );
 }

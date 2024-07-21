@@ -9,6 +9,7 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination"
+import { useToast } from "@/components/ui/use-toast";
 
 import ReferComponent from "@/components/referComponent";
 import ReferalsTable from "@/components/tables/referalsTable";
@@ -20,6 +21,7 @@ export default function ReferalsPage() {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalPage, setTotalPage] = useState<number>(0);
     const [data, setData] = useState<any>(null);
+    const { toast } = useToast();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,9 +29,11 @@ export default function ReferalsPage() {
                 const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/referrals/${user.id}/?page=${currentPage}`);
                 setTotalPage(response.data.total_pages);
                 setData(response.data.results);
-                console.log(response.data);
             } catch (error) {
-                console.error(error);
+                toast({
+                    description: "An error occurred while getting referrals list! Please try again!",
+                    variant: "destructive"
+                });
             }
         }
         fetchData();

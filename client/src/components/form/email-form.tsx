@@ -63,7 +63,7 @@ export default function EmailForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleGet)} className="flex flex-row gap-2 lg:w-[30%] md:w-[50%] sm:w-[90%] justify-center items-center">
+            <form onSubmit={form.handleSubmit(handleGet)} className="flex flex-row gap-2 lg:w-96 md:w-96 w-full justify-center items-center">
                 <FormField
                     control={form.control}
                     name="email"

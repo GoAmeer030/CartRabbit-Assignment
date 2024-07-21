@@ -19,7 +19,6 @@ function getVerificationStatus(isVerified: boolean): string {
 }
 
 export default function ReferalsTable({ data, currentPage }: { data: WaitlistEntry[], currentPage: number }) {
-    console.log(data);
     return (
         <div>
             <p className="text-sm text-muted-foreground text-center w-80 lg:w-full md:w-full mb-2">ONLY VERIFIED USERS WILL BE COUNTED TOWARDS GLOBAL POSITION</p>

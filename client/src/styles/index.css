@@ -67,3 +67,29 @@
         @apply bg-background text-foreground;
     }
 }
+
+@keyframes popupFromBottom {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+.popup-from-bottom-animation {
+    animation: popupFromBottom 0.5s ease-out forwards;
+}
+
+@keyframes popupFromTop {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+.popup-from-top-animation {
+    animation: popupFromTop 0.5s ease-out forwards;
+}

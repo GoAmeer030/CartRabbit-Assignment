@@ -14,7 +14,7 @@ interface WaitlistEntry {
 
 export default function WaitlistTable({ data, currentPage }: { data: WaitlistEntry[], currentPage: number }) {
     return (
-        <div className="border rounded-md lg:w-[60vw] md:w-[60vw] w-[100%] mt-5">
+        <div className="border rounded-md lg:w-[60vw] md:w-[60vw] w-[100%]">
             <Table>
                 <TableHeader className="border grid grid-cols-3">
                     <TableHead className="text-center pt-3.5">S. No.</TableHead>

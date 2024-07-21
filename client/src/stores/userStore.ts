@@ -92,7 +92,6 @@ export const useWaitlistPositionStore = create<WaitlistPositionState>((set) => (
     setWaitlistPosition: (waitlistPosition) => set({ waitlistPosition }),
     fetchWaitlistPosition: async (id) => {
         const { data } = await axios.get(`${import.meta.env.VITE_SERVER_URL}/waitlist/?id=${id}`);
-        console.log(data);
         set({ waitlistPosition: data });
     },
 }));
