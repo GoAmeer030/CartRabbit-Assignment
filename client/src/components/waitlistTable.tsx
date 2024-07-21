@@ -1,7 +1,6 @@
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
@@ -11,10 +10,6 @@ import {
 interface WaitlistEntry {
     position: number;
     user: string;
-}
-
-interface WaitlistTableProps {
-    data: WaitlistEntry[];
 }
 
 export default function WaitlistTable({ data, currentPage }: { data: WaitlistEntry[], currentPage: number }) {

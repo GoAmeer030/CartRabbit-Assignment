@@ -12,12 +12,11 @@ export default function ShowWaitlistPosition() {
     const { user } = useUserStore();
     const { waitlistPosition, fetchWaitlistPosition } = useWaitlistPositionStore();
 
-    if (user.email === "" || user.id === 0 || user.isVerified === false) {
-        return;
-    }
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
+        if (user.id === 0 || user.isVerified === false) {
+            return;
+        }
+
         const fetchData = async () => {
             try {
                 await fetchWaitlistPosition(user.id);
@@ -31,7 +30,11 @@ export default function ShowWaitlistPosition() {
 
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user.email]);
+    }, [user.id, user.isVerified]);
+
+    if (user.id === 0 || user.isVerified === false) {
+        return null;
+    }
 
     return (
         <div className="flex flex-col justify-center items-center">

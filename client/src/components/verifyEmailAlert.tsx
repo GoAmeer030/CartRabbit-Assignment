@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 
 import { useUserStore } from '@/stores/userStore'
 
-export function VerifyEmailAlert() {
+export default function VerifyEmailAlert() {
     const { toast } = useToast();
     const { user, fetchUser, resetUser } = useUserStore();
 
@@ -32,14 +32,14 @@ export function VerifyEmailAlert() {
 
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user.email]);
+    }, [user.id, user.isVerified]);
 
     if (user.isVerified || user.id === 0) {
         return null;
     }
 
     return (
-        <div className="fixed top-36 left-1/2 -translate-x-1/2 lg:w-[40%] md:w-[60%] w-[90%]">
+        <div className="absolute top-36 left-1/2 -translate-x-1/2 lg:w-[40%] md:w-[60%] w-[90%]">
             <Alert className="flex flex-row justify-center">
                 <div>
                     <MailWarning className="h-6 w-6 mt-1" />

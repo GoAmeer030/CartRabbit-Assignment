@@ -1,1 +1,0 @@
-celery -A server worker --loglevel=INFO --pool=solo

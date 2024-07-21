@@ -70,7 +70,7 @@ class VerificationView(APIView):
             return Response({"message": "Invalid verification code"}, status=400)
 
         if verification.user.is_verified:
-            return Response({"message": "User already verified"}, status=400)
+            return Response({"message": "Verification Successfull!!"}, status=400)
 
         if verification.created_at < timezone.now() - timedelta(minutes=10):
             return Response({"message": "Verification code expired"}, status=400)
@@ -147,6 +147,6 @@ class WaitlistWithNamesPagination(PageNumberPagination):
 
 
 class WaitlistWithNamesView(generics.ListAPIView):
-    queryset = Waitlist.objects.all()
+    queryset = Waitlist.objects.all().order_by("position")
     serializer_class = WaitlistWithNamesSerializer
     pagination_class = WaitlistWithNamesPagination
