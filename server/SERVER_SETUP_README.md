@@ -125,3 +125,22 @@ Below is a list of the API endpoints available in the project, along with a brie
 -   **URL**: `/referrals/<int:id>/`
     -   **Description**: Manages user referrals and provides details of referrals made by a user.
     -   **Method**: `GET`
+
+## Mail Serivce
+
+If Google account is used for sending emails, follow the steps below:
+
+1. **Enable Two Factor Authentication (2FA):**
+
+    - Go to [Google Account](https://myaccount.google.com/).
+    - Click on `Security` in the left sidebar.
+    - Scroll down to `Signing in to Google` and enable `2-Step Verification`.
+    - Follow the steps to set up 2FA.
+
+2. **Create an App Password:**
+
+    - Go to [Google Account](https://myaccount.google.com/).
+    - Click on `Security` in the left sidebar.
+    - Scroll down to `Signing in to Google` and click on `App passwords`.
+    - Enter a name for the app password and click on `Generate`.
+    - Copy the generated password and use it in the `.env` file.
