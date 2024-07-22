@@ -14,7 +14,7 @@ export default function Entry() {
       <VerifyEmailAlert />
       <div className="flex justify-center items-center h-full">
         <div className="flex flex-col gap-3 justify-center items-center">
-          <h1 className="text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1]">Join the waitlist!</h1>
+          <h1 className="relative z-10 text-3xl md:text-7xl  bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-orange-400 text-center font-sans font-bold">Join the waitlist!</h1>
           <EmailForm />
         </div>
       </div>
