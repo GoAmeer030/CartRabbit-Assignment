@@ -9,11 +9,31 @@ Classes:
 """
 
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.admin import GroupAdmin as BaseGroupAdmin
+from django.contrib.auth.models import User as DjangoUser, Group as DjangoGroup
+
+from unfold.admin import ModelAdmin
+
 from .models import User, Waitlist, Referral, Verification
 
 
+admin.site.unregister(DjangoUser)
+admin.site.unregister(DjangoGroup)
+
+
+@admin.register(DjangoUser)
+class UserAdmin(BaseUserAdmin, ModelAdmin):
+    pass
+
+
+@admin.register(DjangoGroup)
+class GroupAdmin(BaseGroupAdmin, ModelAdmin):
+    pass
+
+
 @admin.register(User)
-class UserAdmin(admin.ModelAdmin):
+class UserAdmin(ModelAdmin):
     """
     Administration interface options for User model.
 
@@ -36,7 +56,7 @@ class UserAdmin(admin.ModelAdmin):
 
 
 @admin.register(Waitlist)
-class WaitlistAdmin(admin.ModelAdmin):
+class WaitlistAdmin(ModelAdmin):
     """
     Administration interface options for Waitlist model.
 
@@ -53,7 +73,7 @@ class WaitlistAdmin(admin.ModelAdmin):
 
 
 @admin.register(Referral)
-class ReferralAdmin(admin.ModelAdmin):
+class ReferralAdmin(ModelAdmin):
     """
     Administration interface options for Referral model.
 
@@ -68,7 +88,7 @@ class ReferralAdmin(admin.ModelAdmin):
 
 
 @admin.register(Verification)
-class VerificationAdmin(admin.ModelAdmin):
+class VerificationAdmin(ModelAdmin):
     """
     Administration interface options for Verification model.
 

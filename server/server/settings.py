@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "core",
     "rest_framework",
     "corsheaders",
+    "unfold",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -165,3 +166,25 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 if EMAIL_HOST_USER is None or EMAIL_HOST_PASSWORD is None:
     raise ValueError("Insufficient environment variables. 'EMAIL'")
+
+
+# Unfold Settings
+
+UNFOLD = {
+    "SITE_TITLE": "Admin Panel",
+    "SITE_HEADER": "SpotHot Admin Panel",
+    "COLORS": {
+        "primary": {
+            "50": "#FFF3E0",
+            "100": "#FFE0B2",
+            "200": "#FFCC80",
+            "300": "#FFB74D",
+            "400": "#FFA726",
+            "500": "#FF9800",
+            "600": "#FB8C00",
+            "700": "#F57C00",
+            "800": "#EF6C00",
+            "900": "#E65100",
+        }
+    },
+}
