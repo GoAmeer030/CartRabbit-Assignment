@@ -22,6 +22,7 @@ interface UserState {
     setUser: (user: User) => void;
     fetchUser: (email: string) => void;
     registerUser: (name: string, email: string, refCd: string) => void;
+    resendVerificationEmail: (email: string) => void;
     resetUser: () => void;
 }
 
@@ -92,6 +93,10 @@ export const useUserStore = create<UserState>((set) => ({
         } else {
             throw new Error('Internal server error');
         }
+    },
+    // Action to resend the verification email to the user
+    resendVerificationEmail: async (email) => {
+        await axios.post(`${import.meta.env.VITE_SERVER_URL}/resend-verification-email/`, { email });
     },
     // Action to reset the user state and remove user data from session storage
     resetUser: () => {

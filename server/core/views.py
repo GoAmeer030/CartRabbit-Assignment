@@ -34,23 +34,24 @@ from .serializers import (
 from .models import Verification, User, Referral, Waitlist
 
 
+def send_verification_mail(code, mail):
+    """
+    Send a verification email with a unique code.
+
+    Args:
+        code (str): The unique verification code.
+        mail (str): The recipient's email address.
+    """
+    subject = "Verification Code"
+    client_url = os.getenv("CLIENT_URL")
+    message = f"Click this link to be verified {client_url}/verify/?code={code}"
+    recipient_list = [mail]
+
+    send_email.delay(subject, message, recipient_list)
+
+
 class AuthenticationView(APIView):
     """API view for user authentication and verification email sending."""
-
-    def send_verification_mail(self, code, mail):
-        """
-        Send a verification email with a unique code.
-
-        Args:
-            code (str): The unique verification code.
-            mail (str): The recipient's email address.
-        """
-        subject = "Verification Code"
-        client_url = os.getenv("CLIENT_URL")
-        message = f"Click this link to be verified {client_url}/verify/?code={code}"
-        recipient_list = [mail]
-
-        send_email.delay(subject, message, recipient_list)
 
     def post(self, request, code=None):
         """
@@ -84,7 +85,7 @@ class AuthenticationView(APIView):
             if verification_serializer.is_valid():
                 verification_serializer.save()
 
-                self.send_verification_mail(
+                send_verification_mail(
                     verification_serializer.data["unique_code"],
                     user_serializer.data["email"],
                 )
@@ -132,6 +133,61 @@ class VerificationView(APIView):
             update_waitlist.delay(referrer_id)
 
         return Response({"message": "User verified successfully"}, status=200)
+
+
+class ResendVerificationEmailView(APIView):
+    """API view for resending verification email."""
+
+    def post(self, request):
+        """
+        Handle resending of verification email.
+
+        Args:
+            request (HttpRequest): The request object containing user data.
+
+        Returns:
+            Response: The response object with success or error message.
+        """
+        email = request.data.get("email")
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            return Response({"message": "User not found"}, status=404)
+
+        if user.is_verified:
+            return Response({"message": "User already verified"}, status=400)
+
+        verification = Verification.objects.filter(user=user).first()
+
+        if verification and verification.created_at > timezone.now() - timedelta(
+            minutes=2
+        ):
+            return Response(
+                {"message": "Please wait atleast 2 mins before resending"}, status=400
+            )
+
+        if verification:
+            verification.delete()
+
+        random_code = get_random_string(length=6)
+
+        while Verification.objects.filter(unique_code=random_code).exists():
+            random_code = get_random_string(length=6)
+
+        verification_serializer = VerificationSerializer(
+            data={"unique_code": random_code, "user": user.id}
+        )
+        if verification_serializer.is_valid():
+            verification_serializer.save()
+
+            send_verification_mail(
+                verification_serializer.data["unique_code"],
+                user.email,
+            )
+
+            return Response({"message": "Verification email sent"}, status=200)
+
+        return Response(verification_serializer.errors, status=400)
 
 
 class UserView(APIView):

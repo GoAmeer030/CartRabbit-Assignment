@@ -100,7 +100,12 @@ Below is a list of the API endpoints available in the project, along with a brie
     -   **Method**: `POST`
 
 -   **URL**: `/auth/verify/<str:code>/`
+
     -   **Description**: Verifies a user's account using a unique verification code.
+    -   **Method**: `POST`
+
+-   **URL**: `/auth/resend-verification/`
+    -   **Description**: Resends the verification email to the user.
     -   **Method**: `POST`
 
 #### User Endpoints
