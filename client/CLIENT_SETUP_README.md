@@ -25,3 +25,7 @@ This guide provides instructions to set up the client side of the project.
     ```sh
     npm run dev
     ```
+
+## Admin Panel
+
+Go to `CLIENT_URL/admin/` to access the admin panel. Use the superuser credentials created during the server setup to log in.

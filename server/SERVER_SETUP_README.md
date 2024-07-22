@@ -23,13 +23,13 @@ This guide provides instructions to set up the server for the project.
 4. **Activate the virtual environment:**
 
     On Windows:
-    
+
     ```sh
     .\venv\Scripts\activate
     ```
 
     On macOS and Linux:
-    
+
     ```sh
     source venv/bin/activate
     ```
@@ -50,13 +50,21 @@ This guide provides instructions to set up the server for the project.
     python manage.py migrate
     ```
 
-8. **Run the development server:**
+8. **Add a superuser:**
+
+    ```sh
+    python manage.py createsuperuser
+    ```
+
+    Fill out necessary details. This will be the credentials for the admin panel.
+
+9. **Run the development server:**
 
     ```sh
     python manage.py runserver
     ```
 
-9. **Open another shell and run Celery:**
+10. **Open another shell and run Celery:**
 
     ```sh
     celery -A server worker --loglevel=INFO --pool=solo
@@ -68,50 +76,52 @@ Below is a list of the API endpoints available in the project, along with a brie
 
 ### Admin Endpoint
 
-- **URL**: `/admin/`
-- **Description**: This endpoint provides access to the Django admin interface. The Django admin is a built-in feature that allows for easy management of the application's data through a web interface. It comes with many advantages, such as:
-  - Automatic generation of a web-based interface for models registered with the admin site.
-  - The ability to create, read, update, and delete records in the database without needing to write SQL queries.
-  - Support for custom actions, filters, and search functionality to streamline data management tasks.
+-   **URL**: `/admin/`
+-   **Description**: This endpoint provides access to the Django admin interface. The Django admin is a built-in feature that allows for easy management of the application's data through a web interface. It comes with many advantages, such as:
+    -   Automatic generation of a web-based interface for models registered with the admin site.
+    -   The ability to create, read, update, and delete records in the database without needing to write SQL queries.
+    -   Support for custom actions, filters, and search functionality to streamline data management tasks.
 
 ### Core API Endpoints
 
-- **URL**: `/api/`
-- **Description**: This endpoint includes all URLs defined in the `core` application.
+-   **URL**: `/api/`
+-   **Description**: This endpoint includes all URLs defined in the `core` application.
 
 #### Authentication Endpoints
 
-- **URL**: `/auth/`
-  - **Description**: Handles user authentication.
-  - **Method**: `POST`
+-   **URL**: `/auth/`
 
-- **URL**: `/auth/<str:code>/`
-  - **Description**: Handles user authentication with a referral code.
-  - **Method**: `POST`
+    -   **Description**: Handles user authentication.
+    -   **Method**: `POST`
 
-- **URL**: `/auth/verify/<str:code>/`
-  - **Description**: Verifies a user's account using a unique verification code.
-  - **Method**: `POST`
+-   **URL**: `/auth/<str:code>/`
+
+    -   **Description**: Handles user authentication with a referral code.
+    -   **Method**: `POST`
+
+-   **URL**: `/auth/verify/<str:code>/`
+    -   **Description**: Verifies a user's account using a unique verification code.
+    -   **Method**: `POST`
 
 #### User Endpoints
 
-- **URL**: `/user/`
-  - **Description**: Manages user-related operations.
-  - **Method**: `GET`
+-   **URL**: `/user/`
+    -   **Description**: Manages user-related operations.
+    -   **Method**: `GET`
 
 #### Waitlist Endpoints
 
-- **URL**: `/waitlist/`
-  - **Description**: Manages the waitlist for users.
-  - **Method**: `GET`
+-   **URL**: `/waitlist/`
 
-- **URL**: `/global-waitlist/`
-  - **Description**: Provides a global view of the waitlist, including user names.
-  - **Method**: `GET`
+    -   **Description**: Manages the waitlist for users.
+    -   **Method**: `GET`
+
+-   **URL**: `/global-waitlist/`
+    -   **Description**: Provides a global view of the waitlist, including user names.
+    -   **Method**: `GET`
 
 #### Referral Endpoints
 
-- **URL**: `/referrals/<int:id>/`
-  - **Description**: Manages user referrals and provides details of referrals made by a user.
-  - **Method**: `GET`
-
+-   **URL**: `/referrals/<int:id>/`
+    -   **Description**: Manages user referrals and provides details of referrals made by a user.
+    -   **Method**: `GET`
