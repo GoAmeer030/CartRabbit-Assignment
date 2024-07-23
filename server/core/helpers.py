@@ -25,7 +25,7 @@ def send_verification_mail(code, mail):
 
     context = {
         "client_url": client_url,
-        "verfication_url": f"{client_url}/verify/?code={code}",
+        "verification_url": f"{client_url}/verify/?code={code}",
         "type_of_action": "Email Verification",
     }
     html_content = render_to_string("verification-email.html", context)

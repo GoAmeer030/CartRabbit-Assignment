@@ -114,7 +114,7 @@ class VerificationView(APIView):
         referrer = Referral.objects.filter(referee=verification.user).first()
         if referrer is not None:
             referrer_id = referrer.referrer.id
-            update_waitlist.delay(referrer_id)
+            update_waitlist.delay(referrer_id, verification.user.name)
 
         return Response({"message": "User verified successfully"}, status=200)
 

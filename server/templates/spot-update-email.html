@@ -1,0 +1,43 @@
+{% extends "base-email.html" %} {% block title %}Referral Success Email{% endblock title %} {% block content %}
+<tr>
+    <td align="center" bgcolor="#e9ecef">
+        <table
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            width="100%"
+            style="max-width: 600px"
+        >
+            <tr>
+                <td 
+                    align="left"
+                    bgcolor="#ffffff"
+                    style="
+                        padding: 36px 24px 0;
+                        font-family: 'Source Sans Pro', Helvetica, Arial,
+                            sans-serif;
+                        border-top: 3px solid #d4dadf;
+                    "
+                >
+                    <h1
+                        style="
+                            margin: 0;
+                            font-size: 32px;
+                            font-weight: 700;
+                            letter-spacing: -1px;
+                            line-height: 48px;
+                            display: inline;
+                        "
+                    >
+                        Congratulations, <font color="orange">{{ referrer_name }}</font>
+                    </h1>
+                    <p style="margin-top: 20px;">
+                        Your referral <font color="orange">{{ referee_name }}</font>, has successfully joined. Now your referral count is <font color="orange">{{ referrer_referral_count }}</font>. Keep up the good work!.<br />
+                        Now, your spot is <font color="orange">{{ position }}</font>
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </td>
+</tr>
+{% endblock content %}

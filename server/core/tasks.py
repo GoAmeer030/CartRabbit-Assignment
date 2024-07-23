@@ -13,6 +13,7 @@ Functions:
 from django.conf import settings
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.utils.html import strip_tags
+from django.template.loader import render_to_string
 from django.db import models
 from celery import shared_task
 
@@ -69,19 +70,33 @@ def create_waitlist(user_id):
     wait_serializer = WaitlistSerializer(data={"user": user_id, "position": position})
     if wait_serializer.is_valid():
         wait_serializer.save()
+
+        # Sending a welcome email to the user
+        user = User.objects.get(id=user_id)
+        subject = "Welcome - Your Spot is Confirmed!"
+
+        context = {
+            "user_name": user.name,
+            "waitlist_position": position,
+            "type_of_action": "Registration",
+        }
+        html_content = render_to_string("welcome-email.html", context)
+        recipient_list = [user.email]
+
+        send_html_email.delay(subject, html_content, recipient_list)
     else:
         print(wait_serializer.errors)
 
 
 @shared_task
-def update_waitlist(user_id):
+def update_waitlist(referrer_id, referee_name):
     """
     Updates the position of user in the waitlist based on their referral count & creation date of their waitlist entry.
 
     Parameters:
     - user_id (int): The ID of the user whose waitlist position is to be updated.
     """
-    waitlist = Waitlist.objects.filter(user=user_id).first()
+    waitlist = Waitlist.objects.filter(user=referrer_id).first()
 
     if waitlist:
         update_position = waitlist.position - 1
@@ -90,7 +105,7 @@ def update_waitlist(user_id):
         ).first()
 
         if existing_waitlist_entry:
-            user_referral_count = User.objects.get(id=user_id).referral_count
+            user_referral_count = User.objects.get(id=referrer_id).referral_count
             existing_user_referral_count = User.objects.get(
                 id=existing_waitlist_entry.user.id
             ).referral_count
@@ -125,6 +140,22 @@ def update_waitlist(user_id):
         else:
             waitlist.position = update_position
             waitlist.save()
+
+        # Sending an email to the user about their updated position
+        user = User.objects.get(id=referrer_id)
+        subject = "Spot Update - SpotHot"
+
+        context = {
+            "referrer_name": user.name,
+            "referrer_referral_count": user.referral_count,
+            "referee_name": referee_name,
+            "position": waitlist.position,
+            "type_of_action": "Referral",
+        }
+        html_content = render_to_string("spot-update-email.html", context)
+        recipient_list = [user.email]
+
+        send_html_email.delay(subject, html_content, recipient_list)
 
 
 @shared_task
