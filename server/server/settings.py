@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 
+from django.templatetags.static import static
+
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -64,15 +66,15 @@ ROOT_URLCONF = "server.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
@@ -140,6 +142,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
+STATICFILES_DIRS = [BASE_DIR / "static/"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -173,6 +176,10 @@ if EMAIL_HOST_USER is None or EMAIL_HOST_PASSWORD is None:
 UNFOLD = {
     "SITE_TITLE": "Admin Panel",
     "SITE_HEADER": "SpotHot Admin Panel",
+    "SITE_ICON": {
+        "light": lambda request: static("flame.svg"),
+        "dark": lambda request: static("flame.svg"),
+    },
     "COLORS": {
         "primary": {
             "50": "#FFF3E0",
