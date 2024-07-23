@@ -26,6 +26,24 @@ This guide provides instructions to set up the client side of the project.
     npm run dev
     ```
 
+## Build and Run
+
+Sometimes development run may felt very slow and irresponsive. In that case, you can build the client and run the server.
+
+1. **Build the client:**
+
+    ```sh
+    npm run build
+    ```
+
+2. **Run the server:**
+
+    ```sh
+    npm run preview
+    ```
+
+Update `.env` with the new port number.
+
 ## Admin Panel
 
 Go to `CLIENT_URL/admin/` to access the admin panel. Use the superuser credentials created during the server setup to log in.
