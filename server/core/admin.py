@@ -6,16 +6,23 @@ Classes:
     WaitlistAdmin: Admin interface options for Waitlist model.
     ReferralAdmin: Admin interface options for Referral model.
     VerificationAdmin: Admin interface options for Verification model.
+    AccessCodeAdmin: Admin interface options for AccessCode model.
+
+Functions:
+    send_mail: Sends mail to selected users.
 """
 
 from django.contrib import admin
+from django.utils.crypto import get_random_string
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.admin import GroupAdmin as BaseGroupAdmin
 from django.contrib.auth.models import User as DjangoUser, Group as DjangoGroup
 
 from unfold.admin import ModelAdmin
 
-from .models import User, Waitlist, Referral, Verification
+from .serializers import AccessCodeSerializer
+from .models import User, Waitlist, Referral, Verification, AccessCode
+from .helpers import send_winners_mail
 
 
 admin.site.unregister(DjangoUser)
@@ -23,7 +30,7 @@ admin.site.unregister(DjangoGroup)
 
 
 @admin.register(DjangoUser)
-class UserAdmin(BaseUserAdmin, ModelAdmin):
+class DefaultUserAdmin(BaseUserAdmin, ModelAdmin):
     pass
 
 
@@ -55,6 +62,35 @@ class UserAdmin(ModelAdmin):
     list_filter = ("is_verified", "is_deleted")
 
 
+@admin.action(description="Sends mail to selected users")
+def send_mail(modeladmin, request, queryset):
+    """
+    Action to send mail to selected users.
+
+    Args:
+        modeladmin (ModelAdmin): Admin model instance.
+        request (HttpRequest): Request object.
+        queryset (QuerySet): Queryset of selected users.
+    """
+    for query in queryset:
+        access_code = get_random_string(length=16)
+        while AccessCode.objects.filter(code=access_code).exists():
+            access_code = get_random_string(length=16)
+
+        access_code = access_code.upper()
+
+        accesscode_serializer = AccessCodeSerializer(
+            data={"code": access_code, "user": query.user.id}
+        )
+        if accesscode_serializer.is_valid():
+            accesscode_serializer.save()
+
+            send_winners_mail(query.user.name, query.user.email, access_code)
+        else:
+            print(accesscode_serializer.errors)
+            return
+
+
 @admin.register(Waitlist)
 class WaitlistAdmin(ModelAdmin):
     """
@@ -70,6 +106,7 @@ class WaitlistAdmin(ModelAdmin):
     search_fields = ("user__name",)
     list_filter = ("position",)
     order_by = ("position",)
+    actions = [send_mail]
 
 
 @admin.register(Referral)
@@ -100,3 +137,18 @@ class VerificationAdmin(ModelAdmin):
     list_display = ("unique_code", "user")
     search_fields = ("user__name",)
     list_filter = ("unique_code",)
+
+
+@admin.register(AccessCode)
+class AccessCodeAdmin(ModelAdmin):
+    """
+    Administration interface options for AccessCode model.
+
+    - Displays access code and associated user.
+    - Allows searching by user name.
+    - Filters available for access code.
+    """
+
+    list_display = ("code", "user")
+    search_fields = ("user__name",)
+    list_filter = ("code",)

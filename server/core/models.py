@@ -6,9 +6,7 @@ Classes:
     Waitlist: Model for storing user waitlist position.
     Referral: Model for storing user referrals.
     Verification: Model for storing user verification details.
-
-Signals:
-    create_waitlist: Signal to create a waitlist entry for a new user.
+    AccessCode: Model for storing access codes.
 """
 
 from django.db import models
@@ -129,3 +127,29 @@ class Verification(models.Model):
 
     class Meta:
         db_table = "verification"
+
+
+class AccessCode(models.Model):
+    """
+    Model for storing access codes.
+
+    Args:
+        models (django.db.models): Django model class.
+
+    Attributes:
+        user (ForeignKey): User foreign key.
+        code (str): Access code.
+        is_active (bool): Flag to check if the access code is active.
+        created_at (datetime): Date and time of access code creation.
+    """
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    code = models.CharField(max_length=16, unique=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.name} - {self.code}"
+
+    class Meta:
+        db_table = "access_code"

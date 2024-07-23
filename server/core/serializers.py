@@ -12,7 +12,7 @@ Classes:
 """
 
 from rest_framework import serializers
-from .models import User, Waitlist, Verification, Referral
+from .models import User, Waitlist, Verification, Referral, AccessCode
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -100,4 +100,15 @@ class ReferralSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Referral
+        fields = "__all__"
+
+
+class AccessCodeSerializer(serializers.ModelSerializer):
+    """
+    Serializer for AccessCode model.
+    Includes all fields in the model.
+    """
+
+    class Meta:
+        model = AccessCode
         fields = "__all__"

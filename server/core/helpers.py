@@ -33,3 +33,27 @@ def send_verification_mail(code, mail):
     recipient_list = [mail]
 
     send_html_email.delay(subject, html_content, recipient_list)
+
+
+def send_winners_mail(name, mail, code):
+    """
+    Send an email to the selected user.
+
+    Args:
+        name (str): The name of the selected user.
+        mail (str): The email address of the selected user.
+        code (str): The access code for the user.
+    """
+    subject = "Congratulations You Are Selected! - SpotHot"
+
+    context = {
+        "user_name": name,
+        "access_code": code,
+        "client_url": os.getenv("CLIENT_URL"),
+        "type_of_action": "Selection",
+    }
+
+    html_content = render_to_string("winner-email.html", context)
+    recipient_list = [mail]
+
+    send_html_email.delay(subject, html_content, recipient_list)
