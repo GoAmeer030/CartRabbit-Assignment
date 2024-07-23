@@ -18,7 +18,7 @@ export default function Secondary() {
     return (
         <Tabs defaultValue="global-list">
             <div className="flex justify-center">
-                <TabsList className={`grid lg:w-[30vw] md:w-[30vw] w-[100%] ${user.id !== 0 ? 'grid-cols-2' : 'grid-cols-1'}`} >
+                <TabsList className={`grid lg:w-[30vw] md:w-[30vw] w-[90%] ${user.id !== 0 ? 'grid-cols-2' : 'grid-cols-1'}`} >
                     <TabsTrigger value="global-list">Global List</TabsTrigger>
                     {user.id !== 0 && <TabsTrigger value="my-referrals">My Referrals</TabsTrigger>}
                 </TabsList>
