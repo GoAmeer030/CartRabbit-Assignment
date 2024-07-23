@@ -94,12 +94,13 @@ def update_waitlist(referrer_id, referee_name):
     Updates the position of user in the waitlist based on their referral count & creation date of their waitlist entry.
 
     Parameters:
-    - user_id (int): The ID of the user whose waitlist position is to be updated.
+    - referrer_id (int): The ID of the referrer.
+    - referee_name (str): The name of the user being referred
     """
     waitlist = Waitlist.objects.filter(user=referrer_id).first()
 
     if waitlist:
-        update_position = waitlist.position - 1
+        update_position = max(waitlist.position - 1, 1)
         existing_waitlist_entry = Waitlist.objects.filter(
             position=update_position
         ).first()

@@ -149,3 +149,7 @@ If Google account is used for sending emails, follow the steps below:
     - Scroll down to `Signing in to Google` and click on `App passwords`.
     - Enter a name for the app password and click on `Generate`.
     - Copy the generated password and use it in the `.env` file.
+
+## Distributing Final Giveaway Codes
+
+To distribute the final giveaway codes, access the waitlist table in the admin panel. From there, you can send the codes to the selected participants.

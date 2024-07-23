@@ -47,9 +47,8 @@ def send_winners_mail(name, mail, code):
     subject = "Congratulations You Are Selected! - SpotHot"
 
     context = {
-        "user_name": name,
+        "username": name,
         "access_code": code,
-        "client_url": os.getenv("CLIENT_URL"),
         "type_of_action": "Selection",
     }
 

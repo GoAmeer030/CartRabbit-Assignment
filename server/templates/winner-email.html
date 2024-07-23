@@ -57,8 +57,7 @@
                     "
                 >
                     <p style="margin: 0">
-                        You have been selected from the waitlist! Use the access code below to start using
-                        <a href="{{ client_url }}">SpotHot</a>.
+                        You have been selected from the waitlist! Here is your Access Code
                     </p>
                 </td>
             </tr>
@@ -76,31 +75,26 @@
                                 bgcolor="#ffffff"
                                 style="padding: 12px"
                             >
-                                <table
-                                    border="0"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                >
+                                <table border="0" cellpadding="0" cellspacing="0">
                                     <tr>
-                                        <td
-                                            align="center"
-                                            bgcolor="orange"
-                                            style="border-radius: 6px"
-                                        >
-                                            <span
+                                        <td align="center" bgcolor="orange" style="border-radius: 6px">
+                                            <input
+                                                type="text"
+                                                value="{{ access_code }}"
                                                 style="
                                                     display: inline-block;
                                                     padding: 16px 36px;
-                                                    font-family: 'Source Sans Pro',
-                                                        Helvetica, Arial,
-                                                        sans-serif;
+                                                    font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
                                                     font-size: 16px;
                                                     color: #ffffff;
+                                                    background-color: orange;
+                                                    border: none;
                                                     text-decoration: none;
                                                     border-radius: 6px;
                                                 "
-                                                >{{ access_code }}</span
-                                            >
+                                                readonly
+                                                onclick="copyToClipboard()"
+                                            />
                                         </td>
                                     </tr>
                                 </table>

@@ -59,7 +59,7 @@ class UserAdmin(ModelAdmin):
         "is_deleted",
     )
     search_fields = ("name", "email")
-    list_filter = ("is_verified", "is_deleted")
+    list_filter = ("is_verified", "is_deleted", "created_at")
 
 
 @admin.action(description="Sends mail to selected users")
@@ -104,8 +104,7 @@ class WaitlistAdmin(ModelAdmin):
 
     list_display = ("user", "position")
     search_fields = ("user__name",)
-    list_filter = ("position",)
-    order_by = ("position",)
+    ordering = ("position",)
     actions = [send_mail]
 
 
@@ -119,9 +118,15 @@ class ReferralAdmin(ModelAdmin):
     - Filters available for creation date.
     """
 
-    list_display = ("referrer", "referee", "created_at")
+    list_display = (
+        "referrer",
+        "referee",
+    )
     search_fields = ("referrer__name", "referee__name")
-    list_filter = ("created_at",)
+    list_filter = (
+        "created_at",
+        "referrer__name",
+    )
 
 
 @admin.register(Verification)
@@ -136,7 +141,7 @@ class VerificationAdmin(ModelAdmin):
 
     list_display = ("unique_code", "user")
     search_fields = ("user__name",)
-    list_filter = ("unique_code",)
+    list_filter = ("created_at",)
 
 
 @admin.register(AccessCode)
@@ -151,4 +156,4 @@ class AccessCodeAdmin(ModelAdmin):
 
     list_display = ("code", "user")
     search_fields = ("user__name",)
-    list_filter = ("code",)
+    list_filter = ("user__name", "created_at")

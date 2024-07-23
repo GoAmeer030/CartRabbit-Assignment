@@ -38,7 +38,7 @@ export default function ReferalsTable({ data, currentPage }: { data: WaitlistEnt
                         {data.length === 0 ? (
                             <TableRow className="border grid grid-cols-3">
                                 <TableCell className="text-center" colSpan={1}></TableCell>
-                                <TableCell className="text-center font-bold" colSpan={1}>No entries yet</TableCell>
+                                <TableCell className="text-center font-bold" colSpan={1}>No Entries Yet!!</TableCell>
                                 <TableCell className="text-center" colSpan={1}></TableCell>
                             </TableRow>
                         ) : (
