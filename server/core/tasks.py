@@ -3,14 +3,16 @@ This module defines tasks for sending emails, managing waitlists, and handling r
 It utilizes Celery for asynchronous task processing.
 
 Functions:
-- send_email(subject, message, recipient_list): Sends an email to a list of recipients.
+- send_text_email(subject, message, recipient_list): Sends an email to a list of recipients.
+- send_html_email(subject, html_content, recipient_list): Sends an HTML email to a list of recipients.
 - create_waitlist(user_id): Adds a user to the waitlist and assigns them a position.
 - update_waitlist(user_id): Updates the position of a user in the waitlist based on certain criteria.
 - create_referrals(referral_code, referee_id): Creates a referral entry and updates the referrer's count.
 """
 
 from django.conf import settings
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.utils.html import strip_tags
 from django.db import models
 from celery import shared_task
 
@@ -19,7 +21,7 @@ from .models import User, Waitlist
 
 
 @shared_task
-def send_email(subject, message, recipient_list):
+def send_text_email(subject, message, recipient_list):
     """
     Sends an email to a list of recipients.
 
@@ -29,6 +31,26 @@ def send_email(subject, message, recipient_list):
     - recipient_list (list): A list of email addresses to send the email to.
     """
     send_mail(subject, message, settings.EMAIL_HOST_USER, recipient_list)
+
+
+@shared_task
+def send_html_email(subject, html_content, recipient_list):
+    """
+    Sends an HTML email to a list of recipients.
+
+    Parameters:
+    - subject (str): The subject of the email.
+    - html_content (str): The HTML content of the email.
+    - recipient_list (list): A list of email addresses to send the email to.
+    """
+    text_content = strip_tags(html_content)
+
+    email = EmailMultiAlternatives(
+        subject, text_content, to=recipient_list, from_email=settings.EMAIL_HOST_USER
+    )
+    email.attach_alternative(html_content, "text/html")
+
+    email.send()
 
 
 @shared_task

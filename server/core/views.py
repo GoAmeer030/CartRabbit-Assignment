@@ -13,7 +13,6 @@ Classes:
 """
 
 from datetime import timedelta
-import os
 from math import ceil
 
 from django.utils.crypto import get_random_string
@@ -23,7 +22,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .tasks import send_email, create_waitlist, create_referrals, update_waitlist
+from .tasks import create_waitlist, create_referrals, update_waitlist
 from .serializers import (
     UserSerializer,
     VerificationSerializer,
@@ -32,22 +31,7 @@ from .serializers import (
     ReferralsWithDetailsSerializer,
 )
 from .models import Verification, User, Referral, Waitlist
-
-
-def send_verification_mail(code, mail):
-    """
-    Send a verification email with a unique code.
-
-    Args:
-        code (str): The unique verification code.
-        mail (str): The recipient's email address.
-    """
-    subject = "Verification Code"
-    client_url = os.getenv("CLIENT_URL")
-    message = f"Click this link to be verified {client_url}/verify/?code={code}"
-    recipient_list = [mail]
-
-    send_email.delay(subject, message, recipient_list)
+from .helpers import send_verification_mail
 
 
 class AuthenticationView(APIView):
