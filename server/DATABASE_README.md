@@ -50,6 +50,15 @@ This table stores user verification details.
 -   **user (ForeignKey)**: Foreign key referencing the User table.
 -   **created_at (datetime)**: Date and time when the verification was created.
 
+### AccessCode Table
+
+This table stores user AccessCode for the selected user.
+
+-   **user (ForeignKey)**: Foreign key referencing the User table.
+-   **access_code (str)**: Access code for the user.
+-   **created_at (datetime)**: Date and time when the access code was created.
+-   **is_active (bool)**: Flag to check if the access code is active.
+
 ## Note
 
 There is no need to manually create the database schema using SQL code as Django ORM will handle the creation of tables based on the defined models when migrations are run.
